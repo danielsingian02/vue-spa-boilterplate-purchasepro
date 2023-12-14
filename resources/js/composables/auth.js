@@ -46,24 +46,21 @@ export default function useAuth() {
         processing.value = true
         validationErrors.value = {}
 
-        await axios.post('/login', loginForm)
-            .then(async response => {
-                await store.dispatch('auth/getUser')
-                await loginUser()
-                swal({
-                    icon: 'success',
-                    title: 'Login successfully',
-                    showConfirmButton: false,
-                    timer: 1500
+         axios.get('/sanctum/csrf-cookie').then(async () => {
+            await axios.post('/login', loginForm)
+                .then(async response => {
+                    await store.dispatch('auth/getUser')
+                    await loginUser()
+
+                    await router.push({ name: 'public-products.index' })
                 })
-                await router.push({ name: 'admin.index' })
-            })
-            .catch(error => {
-                if (error.response?.data) {
-                    validationErrors.value = error.response.data.errors
-                }
-            })
-            .finally(() => processing.value = false)
+                .catch(error => {
+                    if (error.response?.data) {
+                        validationErrors.value = error.response.data.errors
+                    }
+                })
+                .finally(() => processing.value = false)
+        });
     }
 
     const submitRegister = async () => {
@@ -140,9 +137,10 @@ export default function useAuth() {
             .finally(() => processing.value = false)
     }
 
-    const loginUser = () => {
+    const loginUser = async () => {
         user = store.state.auth.user
         // Cookies.set('loggedIn', true)
+
         getAbilities()
     }
 
@@ -188,6 +186,31 @@ export default function useAuth() {
 
                 ability.update(rules)
             })
+    }
+
+    const redirectToRoleBasedRoute = () => {
+        // Check if there's a route to go back to
+        const backRoute = router.currentRoute.value.query.back;
+        if (backRoute) {
+            router.push({ path: backRoute });
+            return;
+        }
+
+        let routeName;
+    
+        switch (role) {
+            case 'admin':
+                routeName = 'admin.index';
+                break;
+            case 'user':
+                routeName = 'user.dashboard';
+                break;
+            // Add more cases as needed for other roles
+            default:
+                routeName = 'default.route'; // Fallback route
+        }
+    
+        router.push({ name: routeName });
     }
 
     return {

@@ -20,11 +20,6 @@ const app = createApp({
     }
 });
 
-import ExampleComponent from './components/ExampleComponent.vue';
-
-app.component('example-component', ExampleComponent);
-
-
 app.use(router)
 app.use(store)
 app.use(VueSweetalert2)

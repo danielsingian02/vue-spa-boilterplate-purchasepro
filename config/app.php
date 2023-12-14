@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel Vue 3 Stater'),
+    'name' => env('APP_NAME', 'Purchase Pro - eCommerce'),
 
     /*
     |--------------------------------------------------------------------------

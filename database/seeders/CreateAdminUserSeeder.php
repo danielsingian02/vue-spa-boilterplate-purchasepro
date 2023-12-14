@@ -31,7 +31,7 @@ class CreateAdminUserSeeder extends Seeder
             'post-create',
             'post-edit',
             'post-delete'
-            ];
+        ];
         $role2->syncPermissions($permissions);
         Category::create(['name' => 'Vue.js']);
         Category::create(['name' => 'Cat 2']);

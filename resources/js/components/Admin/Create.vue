@@ -34,21 +34,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Category -->
-                        <div class="mb-3">
-                            <label for="post-category" class="form-label">
-                                Category
-                            </label>
-                            <v-select v-model="post.category_id" :options="categories" :reduce="category => category.id" label="text" class="form-control" />
-                            <div class="invalid-feedback mt-1">
-                                {{ errors.category_id }}
-                            </div>
-                            <div class="invalid-feedback mt-1">
-                                <div v-for="message in validationErrors?.category_id">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
                         <div class="mb-3">
                             <label for="thumbnail" class="form-label">
                                 Thumbnail
@@ -76,8 +61,6 @@
 </template>
 <script setup>
     import { onMounted, reactive } from "vue";
-    import useCategories from "@/composables/categories";
-    import usePosts from "@/composables/posts";
     import { useForm, useField, defineRule } from "vee-validate";
     import { required, min } from "../../validation/rules"
     defineRule('required', required)
@@ -95,18 +78,9 @@
     const { value: title } = useField('title', null, { initialValue: '' });
     const { value: content } = useField('content', null, { initialValue: '' });
     const { value: category_id } = useField('category_id', null, { initialValue: '', label: 'category' });
-    const { categories, getCategories } = useCategories()
-    const { storePost, validationErrors, isLoading } = usePosts()
-    const post = reactive({
-        title,
-        content,
-        category_id,
-        thumbnail: ''
-    })
+
     function submitForm() {
-        validate().then(form => { if (form.valid) storePost(post) })
     }
     onMounted(() => {
-        getCategories()
     })
 </script>

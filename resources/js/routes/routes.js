@@ -4,10 +4,6 @@ import store from "../store";
 const AuthenticatedLayout = () => import('../layouts/Authenticated.vue')
 const GuestLayout = ()  => import('../layouts/Guest.vue');
 
-const PostsIndex  = ()  => import('../views/admin/posts/Index.vue');
-const PostsCreate  = ()  => import('../views/admin/posts/Create.vue');
-const PostsEdit  = ()  => import('../views/admin/posts/Edit.vue');
-
 function requireLogin(to, from, next) {
     let isLogin = false;
     isLogin = !!store.state.auth.authenticated;
@@ -42,19 +38,29 @@ export default [
                 component: () => import('../views/home/index.vue'),
             },
             {
-                path: 'posts',
-                name: 'public-posts.index',
-                component: () => import('../views/posts/index.vue'),
+                path: 'products',
+                name: 'public-products.index',
+                component: () => import('../views/products/index.vue'),
             },
             {
-                path: 'posts/:id',
-                name: 'public-posts.details',
-                component: () => import('../views/posts/details.vue'),
+                path: 'products/:slug',
+                name: 'public-products.details',
+                component: () => import('../views/products/details.vue'),
             },
             {
-                path: 'category/:id',
-                name: 'category-posts.index',
-                component: () => import('../views/category/posts.vue'),
+                path: '/cart',
+                name: 'cart',
+                component: () => import('../views/cart/index.vue'),
+            },
+            {
+                path: '/checkout',
+                name: 'cart.checkout',
+                component: () => import('../views/checkout/index.vue'),
+            },
+            {
+                path: '/checkout/thank-you',
+                name: 'cart.checkout.thank_you',
+                component: () => import('../views/checkout/thank-you.vue'),
             },
             {
                 path: 'login',
@@ -80,6 +86,7 @@ export default [
                 component: () => import('../views/auth/passwords/Reset.vue'),
                 beforeEnter: guest,
             },
+
         ]
     },
     {
@@ -101,42 +108,6 @@ export default [
                 path: 'profile',
                 component: () => import('../views/admin/profile/index.vue'),
                 meta: { breadCrumb: 'Profile' }
-            },
-            {
-                name: 'posts.index',
-                path: 'posts',
-                component: PostsIndex,
-                meta: { breadCrumb: 'Posts' }
-            },
-            {
-                name: 'posts.create',
-                path: 'posts/create',
-                component: PostsCreate,
-                meta: { breadCrumb: 'Add new post' }
-            },
-            {
-                name: 'posts.edit',
-                path: 'posts/edit/:id',
-                component: PostsEdit,
-                meta: { breadCrumb: 'Edit post' }
-            },
-            {
-                name: 'categories.index',
-                path: 'categories',
-                component: () => import('../views/admin/categories/Index.vue'),
-                meta: { breadCrumb: 'Categories' }
-            },
-            {
-                name: 'categories.create',
-                path: 'categories/create',
-                component: () => import('../views/admin/categories/Create.vue'),
-                meta: { breadCrumb: 'Add new category' }
-            },
-            {
-                name: 'categories.edit',
-                path: 'categories/edit/:id',
-                component: () => import('../views/admin/categories/Edit.vue'),
-                meta: { breadCrumb: 'Edit Category' }
             },
             {
                 name: 'permissions.index',
